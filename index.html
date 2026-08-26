@@ -1,48 +1,1055 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>El Bajón del Vicho | Las mejores hamburguesas</title>
 
-    <!-- Archivo CSS cargado desde la carpeta css -->
-    <link rel="stylesheet" href="css/styles.css">
+    <title>El Bajón del Vicho | Hamburguesería</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Fuente -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
 </head>
+
 <body>
 
-<!-- Encabezado con logo y navegación -->
-<header>
-    <nav>
-        <img src="assets/logo.png" alt="Logo El Bajón del Vicho">
-        <ul>
-            <li><a href="#combos">Combos</a></li>
-            <li><a href="#nosotros">Nosotros</a></li>
-            <li><a href="#contacto">Contacto</a></li>
-        </ul>
-    </nav>
+<!-- =====================================================
+     HEADER / NAVEGACIÓN
+====================================================== -->
+
+<header class="header">
+
+    <div class="header-container">
+
+        <a href="#inicio" class="logo">
+            <img src="assets/logo.png" alt="El Bajón del Vicho" wid>
+        </a>
+
+        <nav class="navbar">
+
+            <a href="#inicio">Inicio</a>
+            <a href="#menu">Menú</a>
+            <a href="#reservas">Reservas</a>
+            <a href="#sucursales">Sucursales</a>
+            <a href="#contacto">Contacto</a>
+
+        </nav>
+
+        <div class="header-actions">
+
+            <!-- R.2 -->
+            <button class="btn btn-login">
+                Iniciar sesión
+            </button>
+
+            <!-- R.1 -->
+            <button class="btn btn-register">
+                Registrarse
+            </button>
+
+            <!-- R.3 -->
+            <button class="admin-button">
+                Admin
+            </button>
+
+            <button class="cart-button">
+                🛒
+                <span>0</span>
+            </button>
+
+        </div>
+
+    </div>
+
 </header>
 
-<!-- Contenido principal -->
+
 <main>
-    <!-- Sección de bienvenida / Banner principal -->
-    <section class="hero">
-        <h1>El Bajón del Vicho</h1>
-        <p>Hamburguesas que te dejan pegado 🍔🔥</p>
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <section id="inicio" class="hero">
+
+        <div class="hero-content">
+
+            <p class="hero-subtitle">
+                HAMBURGUESAS · DELIVERY · RESERVAS
+            </p>
+
+            <h1>
+                EL BAJÓN<br>
+                DEL VICHO
+            </h1>
+
+            <p class="hero-description">
+                Hamburguesas monstruosas para esos ataques
+                de hambre que no perdonan.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a href="#menu" class="btn btn-primary">
+                    Ver menú
+                </a>
+
+                <a href="#reservas" class="btn btn-secondary">
+                    Reservar mesa
+                </a>
+
+            </div>
+
+        </div>
+
+        <!-- Lugar para imagen principal -->
+        <div class="hero-image">
+
+            <img
+                    src="assets/logo.png"
+                    alt="Hamburguesa El Bajón del Vicho"
+            >
+
+        </div>
+
     </section>
 
-    <!-- Sección del Menú / Combos -->
-    <section id="combos">
-        <h2>Nuestros Combos</h2>
-        <!-- Aquí irán las tarjetas de tu menú (Gorilla Glue, Lemon Haze, etc.) -->
+
+    <!-- =====================================================
+         MODALIDAD DEL PEDIDO
+         R.7
+    ====================================================== -->
+
+    <section class="order-type">
+
+        <div class="section-container">
+
+            <p class="section-label">
+                TU PEDIDO
+            </p>
+
+            <h2>
+                ¿CÓMO QUIERES RECIBIRLO?
+            </h2>
+
+            <div class="order-options">
+
+                <button class="order-option active">
+
+                        <span class="order-icon">
+                            🛵
+                        </span>
+
+                    <strong>
+                        DELIVERY
+                    </strong>
+
+                    <small>
+                        Recíbelo donde estés
+                    </small>
+
+                </button>
+
+
+                <button class="order-option">
+
+                        <span class="order-icon">
+                            🏪
+                        </span>
+
+                    <strong>
+                        RETIRO EN TIENDA
+                    </strong>
+
+                    <small>
+                        Pasa a buscarlo
+                    </small>
+
+                </button>
+
+            </div>
+
+        </div>
+
     </section>
+
+
+    <!-- =====================================================
+         MENÚ
+         R.5
+    ====================================================== -->
+
+    <section id="menu" class="menu-section">
+
+        <div class="section-container">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <p class="section-label">
+                        PARA EL BAJÓN
+                    </p>
+
+                    <h2>
+                        NUESTRO MENÚ
+                    </h2>
+
+                </div>
+
+                <p class="section-description">
+                    Porciones monumentales para hambre monumental.
+                </p>
+
+            </div>
+
+
+            <!-- Categorías -->
+
+            <div class="categories">
+
+                <button class="category active">
+                    Hamburguesas
+                </button>
+
+                <button class="category">
+                    Acompañamientos
+                </button>
+
+                <button class="category">
+                    Bebidas
+                </button>
+
+            </div>
+
+
+            <!-- Productos -->
+
+            <div class="products-grid">
+
+
+                <!-- PRODUCTO 1 -->
+
+                <article class="product-card">
+
+                    <div class="product-image">
+
+                        <!-- REEMPLAZAR POR FOTO -->
+                        <img
+                                src="assets/combo_clasico.webp"
+                                alt="Hamburguesa clásica"
+                        >
+
+                    </div>
+
+                    <div class="product-info">
+
+                        <h3>
+                            COMBO CLASICO
+                        </h3>
+
+                        <p>
+                            Carne, queso cheddar, tocino,
+                            lechuga, tomate y salsa de la casa.
+                        </p>
+
+                        <div class="product-bottom">
+
+                            <strong>
+                                $8.990
+                            </strong>
+
+                            <!-- R.6 -->
+                            <button class="add-button">
+                                + AGREGAR
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- PRODUCTO 2 -->
+
+                <article class="product-card">
+
+                    <div class="product-image">
+
+                        <img
+                                src="assets/combo_gorilla_glue.webp"
+                                alt="Hamburguesa doble"
+                        >
+
+                    </div>
+
+                    <div class="product-info">
+
+                        <h3>
+                            COMBO GORILLA GLUE
+                        </h3>
+
+                        <p>
+                            Doble carne, doble cheddar,
+                            tocino y salsa especial.
+                        </p>
+
+                        <div class="product-bottom">
+
+                            <strong>
+                                $10.990
+                            </strong>
+
+                            <button class="add-button">
+                                + AGREGAR
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- PRODUCTO 3 -->
+
+                <article class="product-card">
+
+                    <div class="product-image">
+
+                        <img
+                                src="assets/combo_haze.webp"
+                                alt="Hamburguesa monstruosa"
+                        >
+
+                    </div>
+
+                    <div class="product-info">
+
+                        <h3>
+                            COMBO HAZE
+                        </h3>
+
+                        <p>
+                            Triple carne, triple queso,
+                            tocino y todos los extras.
+                        </p>
+
+                        <div class="product-bottom">
+
+                            <strong>
+                                $13.990
+                            </strong>
+
+                            <button class="add-button">
+                                + AGREGAR
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- PRODUCTO 4 -->
+
+                <article class="product-card">
+
+                    <div class="product-image">
+
+                        <img
+                                src="assets/combo_purple_haze.webp"
+                                alt="Papas fritas"
+                        >
+
+                    </div>
+
+                    <div class="product-info">
+
+                        <h3>
+                            COMBO PURPLE HAZE
+                        </h3>
+
+                        <p>
+                            Papas fritas crujientes con
+                            nuestra salsa especial.
+                        </p>
+
+                        <div class="product-bottom">
+
+                            <strong>
+                                $4.990
+                            </strong>
+
+                            <button class="add-button">
+                                + AGREGAR
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         RESERVAS
+         R.9
+    ====================================================== -->
+
+    <section id="reservas" class="reservation-section">
+
+        <div class="section-container reservation-container">
+
+            <div class="reservation-info">
+
+                <p class="section-label">
+                    ¿VAS A VENIR?
+                </p>
+
+                <h2>
+                    RESERVA TU MESA
+                </h2>
+
+                <p>
+                    Junta a los tuyos y ven a pegarte
+                    el bajón en nuestras sucursales.
+                </p>
+
+            </div>
+
+
+            <form class="reservation-form">
+
+                <div class="form-group">
+
+                    <label for="people">
+                        Cantidad de personas
+                    </label>
+
+                    <input
+                            type="number"
+                            id="people"
+                            min="1"
+                            placeholder="Ej: 4"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="date">
+                        Fecha
+                    </label>
+
+                    <input
+                            type="date"
+                            id="date"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="time">
+                        Hora
+                    </label>
+
+                    <input
+                            type="time"
+                            id="time"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="branch">
+                        Sucursal
+                    </label>
+
+                    <select id="branch">
+
+                        <option value="">
+                            Seleccionar sucursal
+                        </option>
+
+                        <option>
+                            Sucursal Centro
+                        </option>
+
+                        <option>
+                            Sucursal Providencia
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                        type="submit"
+                        class="btn btn-primary full-width"
+                >
+                    Reservar mesa
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SUCURSALES
+         R.11
+         R.12
+    ====================================================== -->
+
+    <section id="sucursales" class="branches-section">
+
+        <div class="section-container">
+
+            <div class="section-heading centered">
+
+                <p class="section-label">
+                    ENCUÉNTRANOS
+                </p>
+
+                <h2>
+                    NUESTRAS SUCURSALES
+                </h2>
+
+            </div>
+
+
+            <div class="branches-grid">
+
+
+                <article class="branch-card">
+
+                    <div class="branch-image">
+
+                        <!-- Lugar para mapa/foto -->
+                        <img
+                                src="img/sucursal-01.jpg"
+                                alt="Sucursal Centro"
+                        >
+
+                    </div>
+
+                    <div class="branch-info">
+
+                        <h3>
+                            Sucursal Centro
+                        </h3>
+
+                        <p>
+                            📍 Av. Principal 1234
+                        </p>
+
+                        <p>
+                            🕐 Lunes a Domingo
+                            <br>
+                            12:00 - 23:00
+                        </p>
+
+                        <button class="branch-button">
+                            Ver ubicación
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <article class="branch-card">
+
+                    <div class="branch-image">
+
+                        <img
+                                src="img/sucursal-02.jpg"
+                                alt="Sucursal Providencia"
+                        >
+
+                    </div>
+
+                    <div class="branch-info">
+
+                        <h3>
+                            Sucursal Providencia
+                        </h3>
+
+                        <p>
+                            📍 Av. Providencia 5678
+                        </p>
+
+                        <p>
+                            🕐 Lunes a Domingo
+                            <br>
+                            12:00 - 23:00
+                        </p>
+
+                        <button class="branch-button">
+                            Ver ubicación
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         CONTACTO
+         R.13
+         R.14
+    ====================================================== -->
+
+    <section id="contacto" class="contact-section">
+
+        <div class="section-container contact-container">
+
+            <div class="contact-info">
+
+                <p class="section-label">
+                    ¿NECESITAS AYUDA?
+                </p>
+
+                <h2>
+                    HABLEMOS
+                </h2>
+
+                <p>
+                    ¿Tienes alguna duda, problema con tu pedido
+                    o simplemente quieres hablar con nosotros?
+                </p>
+
+
+                <!-- R.14 -->
+
+                <a
+                        href="#"
+                        class="whatsapp-button"
+                >
+                    💬 Hablar por WhatsApp
+                </a>
+
+            </div>
+
+
+            <!-- R.13 -->
+
+            <form class="contact-form">
+
+                <div class="form-group">
+
+                    <label for="name">
+                        Nombre
+                    </label>
+
+                    <input
+                            type="text"
+                            id="name"
+                            placeholder="Tu nombre"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Correo electrónico
+                    </label>
+
+                    <input
+                            type="email"
+                            id="email"
+                            placeholder="correo@ejemplo.com"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="message">
+                        Mensaje
+                    </label>
+
+                    <textarea
+                            id="message"
+                            rows="5"
+                            placeholder="Escribe tu mensaje..."
+                    ></textarea>
+
+                </div>
+
+
+                <button
+                        type="submit"
+                        class="btn btn-primary"
+                >
+                    Enviar mensaje
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         LOGIN / REGISTRO
+         Estructura preparada
+         R.1
+         R.2
+         R.3
+    ====================================================== -->
+
+    <section class="account-section">
+
+        <div class="account-container">
+
+            <div class="account-box">
+
+                <h2>
+                    INICIAR SESIÓN
+                </h2>
+
+                <form>
+
+                    <div class="form-group">
+
+                        <label>
+                            Correo
+                        </label>
+
+                        <input
+                                type="email"
+                                placeholder="correo@ejemplo.com"
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            Contraseña
+                        </label>
+
+                        <input
+                                type="password"
+                                placeholder="Contraseña"
+                        >
+
+                    </div>
+
+                    <button class="btn btn-primary full-width">
+                        Ingresar
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <div class="account-box">
+
+                <h2>
+                    CREAR CUENTA
+                </h2>
+
+                <form>
+
+                    <div class="form-group">
+
+                        <label>
+                            Nombre
+                        </label>
+
+                        <input
+                                type="text"
+                                placeholder="Nombre completo"
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            Correo
+                        </label>
+
+                        <input
+                                type="email"
+                                placeholder="correo@ejemplo.com"
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            Teléfono
+                        </label>
+
+                        <input
+                                type="tel"
+                                placeholder="+56 9..."
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            Dirección
+                        </label>
+
+                        <input
+                                type="text"
+                                placeholder="Dirección"
+                        >
+
+                    </div>
+
+                    <button class="btn btn-primary full-width">
+                        Crear cuenta
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
 </main>
 
-<!-- Pie de página -->
-<footer>
-    <p>&copy; 2026 El Bajón del Vicho - Todos los derechos reservados.</p>
+
+<!-- =====================================================
+     CARRITO
+     R.6
+     R.15
+====================================================== -->
+
+<aside class="cart">
+
+    <div class="cart-header">
+
+        <h2>
+            TU PEDIDO
+        </h2>
+
+        <button class="close-cart">
+            ×
+        </button>
+
+    </div>
+
+
+    <div class="cart-items">
+
+        <!-- Producto de ejemplo -->
+
+        <div class="cart-item">
+
+            <div>
+
+                <strong>
+                    La Vicho
+                </strong>
+
+                <p>
+                    $8.990
+                </p>
+
+            </div>
+
+
+            <div class="quantity">
+
+                <button>
+                    -
+                </button>
+
+                <span>
+                        1
+                    </span>
+
+                <button>
+                    +
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="cart-summary">
+
+        <div>
+                <span>
+                    Subtotal
+                </span>
+
+            <strong>
+                $8.990
+            </strong>
+        </div>
+
+
+        <div>
+                <span>
+                    Total
+                </span>
+
+            <strong class="cart-total">
+                $8.990
+            </strong>
+        </div>
+
+    </div>
+
+
+    <button class="btn btn-primary full-width">
+        Confirmar pedido
+    </button>
+
+</aside>
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div class="footer-brand">
+
+            <img
+                    src="img/logo.png"
+                    alt="El Bajón del Vicho"
+            >
+
+            <p>
+                Porciones monumentales.
+                Bajones inolvidables.
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <h3>
+                Navegación
+            </h3>
+
+            <a href="#inicio">
+                Inicio
+            </a>
+
+            <a href="#menu">
+                Menú
+            </a>
+
+            <a href="#reservas">
+                Reservas
+            </a>
+
+            <a href="#sucursales">
+                Sucursales
+            </a>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <h3>
+                Cuenta
+            </h3>
+
+            <a href="#">
+                Iniciar sesión
+            </a>
+
+            <a href="#">
+                Registrarse
+            </a>
+
+            <a href="#">
+                Administrador
+            </a>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <h3>
+                Legal
+            </h3>
+
+            <a href="#">
+                Términos
+            </a>
+
+            <a href="#">
+                Privacidad
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 El Bajón del Vicho · Todos los derechos reservados
+        </p>
+
+    </div>
+
 </footer>
 
-<!-- Tu JavaScript vinculado al final para no ralentizar la carga del sitio -->
-<script src="js/script.js"></script>
+
 </body>
+
 </html>
