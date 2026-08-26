@@ -1,1 +1,5 @@
+<p align="center">
+  <img src="assets/logo.png" alt="Descripción" width="300">
+</p>
+
 "El Bajón del Vicho" es una hamburguesería de estilo urbano diseñada para los verdaderos amantes del bajón y las porciones monumentales. Nuestra plataforma web permite a los clientes explorar un menú contundente, gestionar pedidos ágilmente para delivery o retiro, y reservar mesas en nuestras sucursales. El enfoque del sistema es ofrecer una experiencia de usuario rápida, interactiva y sin rodeos para satisfacer cualquier ataque de hambre.
