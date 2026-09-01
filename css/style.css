@@ -1179,6 +1179,103 @@ button {
 
     font-size: 12px;
 }
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color:rgba(0,0,0,0.85);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+.modal-card{
+    background: var(--black-light);
+    border: 1px solid var(--border);
+    width: 90%;
+    max-width: 400px;
+    padding: 35px 25px;
+    border-radius: var(--radius);
+    position: relative;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+.modal-close{
+
+
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--gray);
+    transition: 0.2s;
+}
+.modal-close:hover{
+    color: var(--yellow);
+}
+.modal-subtitle{
+    font-size: 13px;
+    color: var(--gray);
+    margin-bottom: 5px;
+}
+.modal-title{
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 1px;
+    color: var(--yellow);
+    margin-bottom: 20px;
+}
+.btn-guest{
+    background-color: var(--yellow);
+    color: #000000;
+    font-weight: 800;
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 12px;
+    text-transform: uppercase;
+    transition: 0.2s;
+}
+.btn-guest:hover{
+    background-color: var(--yellow-dark);
+    transform: translateY(-2px);
+}
+.modal-divider{
+    margin: 25px 0;
+    border-bottom: 1px solid var(--border);
+    line-height: 0.1em;
+}
+.modal-divider span{
+    background: var(--black-light);
+    padding: 0 12px;
+    color: var(--gray);
+    font-size: 12px;
+}
+.modal-footer-links{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.modal-footer-links a {
+    color: var(--yellow);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.modal-footer-links a:hover {
+    text-decoration: underline;
+}
+
+
 
 
 /* =========================================================
