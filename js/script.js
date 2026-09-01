@@ -95,8 +95,16 @@ document.addEventListener('DOMContentLoaded',()=>{
     }
     checkSession();
 
+    // Capturas el botón de registrarse
+    const btnRegister = document.querySelector('.btn-register');
 
-
-
-
+// Abres el modal al hacer clic
+    if (btnRegister) {
+        btnRegister.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (modal) {
+                modal.style.display = 'flex';
+            }
+        });
+    }
 });
