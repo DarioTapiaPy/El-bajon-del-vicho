@@ -1048,6 +1048,35 @@
     </div>
 
 </footer>
+
+<div id = "loginModal" class="modal-overlay">
+    <div class = "modal-card">
+        <button type="button" class="modal-close" id="closeModal">&times;</button>
+        <p class="modal-subtitle"> Hola! ¿Como quieres continuar?</p>
+        <h2 class="modal-title"> Inicio Sesion</h2>
+
+        <!-- Opcion Invitado -->
+        <div class="modal-actions">
+            <button type="button" class="btn btn-guest" id="guestBtn">
+                Ingresa como Invitado
+            </button>
+        </div>
+        <div class="modal-divider">
+            <span> o ingresa con tu correo</span>
+        </div>
+        <form id="modalLoginForm">
+            <div class="form-group">
+                <input type="email" id="modalEmail" placeholder="Ingresa tu correo" required>
+            </div>
+            <div class="form-group">
+                <input type="password" id="modalPassword" placeholder="Contraseña" required>
+            </div>
+            <button type="submit" class="btn-guest">
+                INGRESAR
+            </button>
+        </form>
+    </div>
+</div>
 <script src="js/script.js"></script>
 
 
