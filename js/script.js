@@ -132,4 +132,57 @@ document.addEventListener('DOMContentLoaded',()=>{
             window.open('https://maps.app.goo.gl/gQGtiKcHUo6ZeocC8','_blank')
         })
     }
+
+// Interceptar el formulario de contacto para enviar por WhatsApp
+    const contactForm = document.querySelector('.contact-form');
+
+    if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault(); // Evitamos que la página se recargue
+
+            // 1. Obtenemos los valores que el usuario ingresó
+            const nombre = document.getElementById('name').value;
+            const correo = document.getElementById('email').value;
+            const mensaje = document.getElementById('message').value;
+
+            // 2. Construimos el texto
+            const textoWhatsApp = `¡Hola! Me llamo ${nombre}.%0A%0AMi correo es ${correo}.%0A%0A${mensaje}`;
+
+            // 3. Definimos el número de destino (código de país + número)
+            const numeroDestino = '56967671234';
+
+            // 4. Generamos la URL y la abrimos en una nueva pestaña
+            const url = `https://wa.me/${numeroDestino}?text=${textoWhatsApp}`;
+            window.open(url, '_blank');
+
+            // 5. Limpiamos el formulario después de enviar
+            contactForm.reset();
+        });
+    }
+
+    // Limitar el rango de fechas en la reserva (Mínimo hoy, máximo 30 días)
+    const dateInput = document.getElementById('date');
+
+    if (dateInput) {
+        // 1. Obtener la fecha actual (local)
+        const hoy = new Date();
+        const year = hoy.getFullYear();
+        const month = String(hoy.getMonth() + 1).padStart(2, '0');
+        const day = String(hoy.getDate()).padStart(2, '0');
+        const minDate = `${year}-${month}-${day}`;
+
+        // Establecer que no se puedan elegir fechas en el pasado
+        dateInput.setAttribute('min', minDate);
+
+        // 2. Calcular la fecha límite (ejemplo: 30 días a partir de hoy)
+        const limite = new Date();
+        limite.setDate(hoy.getDate() + 30);
+        const maxYear = limite.getFullYear();
+        const maxMonth = String(limite.getMonth() + 1).padStart(2, '0');
+        const maxDay = String(limite.getDate()).padStart(2, '0');
+        const maxDate = `${maxYear}-${maxMonth}-${maxDay}`;
+
+        // Establecer el límite máximo en el calendario
+        dateInput.setAttribute('max', maxDate);
+    }
 });
