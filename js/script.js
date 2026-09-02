@@ -184,8 +184,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const viewOrder = document.getElementById('cart-view-order');
     const viewSuccess = document.getElementById('cart-view-success');
+    const viewEmpty = document.getElementById('cart-view-empty'); // NUEVO
     const btnConfirmar = document.getElementById('btn-confirmar');
     const btnSeguirComprando = document.getElementById('btn-seguir-comprando');
+    const btnIrMenu = document.getElementById('btn-ir-menu'); // NUEVO
+
+    // Necesitamos seleccionar dinámicamente todos los botones de cerrar (ahora son 3)
     const btnCloseCartAll = document.querySelectorAll('.close-cart');
 
     let carrito = JSON.parse(localStorage.getItem('carritoBajon')) || [];
@@ -196,6 +200,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let totalPrecio = 0;
         let totalCantidad = 0;
+
+        // --- LÓGICA DE INTERCAMBIO DE VISTAS ---
+        if (carrito.length === 0) {
+            viewOrder.style.display = 'none';
+            viewSuccess.style.display = 'none';
+            viewEmpty.style.display = 'flex'; // Mostramos pantalla vacía
+            cartBadge.textContent = '0';
+            return; // Cortamos la función acá porque no hay nada que calcular
+        } else {
+            viewOrder.style.display = 'flex';
+            viewEmpty.style.display = 'none';
+        }
+        // ----------------------------------------
 
         carrito.forEach((item, index) => {
             totalPrecio += item.precio * item.cantidad;
@@ -233,15 +250,14 @@ document.addEventListener('DOMContentLoaded', () => {
         cartElement.classList.add('open');
     });
 
-    // Cerrar carrito (sirve para ambas 'x')
+    // Cerrar carrito (sirve para las 'x' de las tres vistas)
     btnCloseCartAll.forEach(btn => {
         btn.addEventListener('click', () => {
             cartElement.classList.remove('open');
 
-            // Volver a la vista normal cuando la animación termine
+            // Cuando termina la animación de cerrarse, actualizamos las vistas por detrás
             setTimeout(() => {
-                viewSuccess.style.display = 'none';
-                viewOrder.style.display = 'flex';
+                actualizarCarrito();
             }, 300);
         });
     });
@@ -286,21 +302,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target.classList.contains('btn-quitar')) {
             carrito.splice(index, 1);
             actualizarCarrito();
-
-            if(carrito.length === 0) {
-                cartElement.classList.remove('open');
-            }
         }
     });
 
-    // Confirmar pedido (Pasar a la pantalla de éxito)
+    // Confirmar pedido
     if (btnConfirmar) {
         btnConfirmar.addEventListener('click', () => {
-            if (carrito.length === 0) {
-                alert("El carrito está vacío, agrega productos primero.");
-                return;
-            }
-
             let totalCantidad = 0;
             let totalPrecio = 0;
             carrito.forEach(item => {
@@ -312,29 +319,37 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('success-total-price').textContent = '$' + totalPrecio.toLocaleString('es-CL');
             document.getElementById('success-order-num').textContent = Math.floor(Math.random() * 9000) + 1000;
 
+            // Mostramos el mensaje de éxito
             viewOrder.style.display = 'none';
+            viewEmpty.style.display = 'none';
             viewSuccess.style.display = 'flex';
 
-            // Vaciar el carrito en la memoria lógica
+            // Vaciamos la memoria y actualizamos el icono, pero NO llamamos a actualizarCarrito() para no romper la vista
             carrito = [];
-            actualizarCarrito();
+            localStorage.setItem('carritoBajon', JSON.stringify(carrito));
+            cartBadge.textContent = '0';
         });
     }
 
-    // Botón "Seguir comprando" de la pantalla de éxito
+    // Botón "Seguir comprando"
     if (btnSeguirComprando) {
         btnSeguirComprando.addEventListener('click', () => {
             cartElement.classList.remove('open');
 
-            // Volver a la vista normal cuando la animación termine
+            // Actualizamos la vista por detrás para que al abrirlo de nuevo esté vacío
             setTimeout(() => {
-                viewSuccess.style.display = 'none';
-                viewOrder.style.display = 'flex';
+                actualizarCarrito();
             }, 300);
+        });
+    }
+
+    // Botón "Ver el menú" de la pantalla vacía
+    if (btnIrMenu) {
+        btnIrMenu.addEventListener('click', () => {
+            cartElement.classList.remove('open');
         });
     }
 
     // Cargar visualmente el carrito al iniciar la página
     actualizarCarrito();
-
 });
