@@ -1211,90 +1211,71 @@
      R.15
 ====================================================== -->
 
+<!-- =====================================================
+     CARRITO
+====================================================== -->
+
 <aside class="cart">
 
-    <div class="cart-header">
+    <!-- VISTA 1: CONTENIDO DEL PEDIDO -->
+    <div class="cart-content" id="cart-view-order">
+        <div class="cart-header">
+            <h2>TU PEDIDO</h2>
+            <button class="close-cart">×</button>
+        </div>
 
-        <h2>
-            TU PEDIDO
-        </h2>
+        <div class="cart-items">
+            <!-- Los items se inyectan con JS -->
+        </div>
 
-        <button class="close-cart">
-            ×
-        </button>
-
-    </div>
-
-
-    <div class="cart-items">
-
-        <!-- Producto de ejemplo -->
-
-        <div class="cart-item">
-
+        <div class="cart-summary">
             <div>
-
-                <strong>
-                    La Vicho
-                </strong>
-
-                <p>
-                    $8.990
-                </p>
-
+                <span>Subtotal</span>
+                <strong id="cart-subtotal">$0</strong>
             </div>
-
-
-            <div class="quantity">
-
-                <button>
-                    -
-                </button>
-
-                <span>
-                        1
-                    </span>
-
-                <button>
-                    +
-                </button>
-
+            <div>
+                <span>Total</span>
+                <strong class="cart-total">$0</strong>
             </div>
-
         </div>
 
+        <button class="btn btn-primary full-width" id="btn-confirmar">
+            Confirmar pedido
+        </button>
     </div>
 
-
-    <div class="cart-summary">
-
-        <div>
-                <span>
-                    Subtotal
-                </span>
-
-            <strong>
-                $8.990
-            </strong>
+    <!-- VISTA 2: MENSAJE DE ÉXITO (Oculto por defecto) -->
+    <div class="cart-success" id="cart-view-success" style="display: none;">
+        <div class="cart-header">
+            <h2>Mi carrito</h2>
+            <button class="close-cart">×</button>
         </div>
 
+        <div class="success-body">
+            <div class="success-icon">✓</div>
+            <h3>Pedido registrado</h3>
+            <p class="order-number">N° <span id="success-order-num">1001</span></p>
 
-        <div>
-                <span>
-                    Total
-                </span>
+            <div class="success-details">
+                <div>
+                    <span>PRODUCTOS</span>
+                    <strong id="success-items-count">0 productos</strong>
+                </div>
+                <div>
+                    <span>TOTAL</span>
+                    <strong id="success-total-price">$0</strong>
+                </div>
+            </div>
 
-            <strong class="cart-total">
-                $8.990
-            </strong>
+            <p class="success-message">
+                Te contactaremos al correo o al teléfono registrado para coordinar el despacho.
+            </p>
+
+            <button class="btn btn-primary full-width" id="btn-seguir-comprando">
+                Seguir comprando
+            </button>
         </div>
-
     </div>
-
-
-    <button class="btn btn-primary full-width">
-        Confirmar pedido
-    </button>
 
 </aside>
 
