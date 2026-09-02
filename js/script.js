@@ -1,24 +1,21 @@
-//filtro para separar hamburguesas, acompañamientos y bebidas
 document.addEventListener('DOMContentLoaded', () => {
+
+    // =========================================================
+    // 1. FILTRO CATEGORÍAS (CON TOGGLE)
+    // =========================================================
     const botones = document.querySelectorAll('.category');
     const productos = document.querySelectorAll('.product-card');
 
     botones.forEach(boton => {
         boton.addEventListener('click', () => {
-            // Verificamos si el botón que clickeamos ya estaba activo
             const estaActivo = boton.classList.contains('active');
-
-            // Limpiamos la clase 'active' de todos los botones
             botones.forEach(b => b.classList.remove('active'));
 
             if (estaActivo) {
-                // Si ya estaba activo, al hacer clic queremos desmarcarlo
-                // y mostrar todos los productos nuevamente
                 productos.forEach(producto => {
                     producto.style.display = '';
                 });
             } else {
-                // Si no estaba activo, lo marcamos y aplicamos el filtro
                 boton.classList.add('active');
                 const filtro = boton.getAttribute('data-filter');
 
@@ -32,21 +29,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-});
 
-//filtro para inciar sesion
-document.addEventListener('DOMContentLoaded',()=>{
-
+    // =========================================================
+    // 2. MODAL INICIO SESIÓN Y LOCALSTORAGE
+    // =========================================================
     const btnLogin = document.querySelector('.btn-login');
     const modal = document.getElementById('loginModal');
     const closeModalBtn = document.getElementById('closeModal');
     const loginForm = document.getElementById('modalLoginForm');
     const guestBtn = document.getElementById('guestBtn');
 
-    //Verificacion del estado de sesion en el localStorage
     function checkSession(){
         const savedUser = localStorage.getItem('userEmail');
-
         if (savedUser){
             btnLogin.textContent= savedUser;
             btnLogin.classList.add('logged-in');
@@ -54,19 +48,17 @@ document.addEventListener('DOMContentLoaded',()=>{
             btnLogin.textContent= 'Iniciar sesion';
             btnLogin.classList.remove('logged-in');
         }
-
     }
+
     if (btnLogin) {
         btnLogin.addEventListener('click', () => {
             const currentUser = localStorage.getItem('userEmail');
-
             if (currentUser) {
                 if (confirm(`¿Quieres cerrar la sesión de ${currentUser}?`)) {
                     localStorage.removeItem('userEmail');
                     checkSession();
                 }
             } else {
-                // Verificación para evitar el error 'read properties of null'
                 if (modal) {
                     modal.style.display = 'flex';
                 } else {
@@ -75,27 +67,30 @@ document.addEventListener('DOMContentLoaded',()=>{
             }
         });
     }
+
     if (closeModalBtn){
         closeModalBtn.addEventListener('click',() => {
             modal.style.display= 'none';
         });
     }
+
     window.addEventListener('click',(e) =>{
         if (e.target === modal){
             modal.style.display ='none';
         }
     });
+
     if (loginForm){
         loginForm.addEventListener('submit',(e) => {
             e.preventDefault();
             const emailInput = document.getElementById('modalEmail').value;
-
             localStorage.setItem('userEmail', emailInput);
             modal.style.display = 'none';
             loginForm.reset();
             checkSession();
         });
     }
+
     if (guestBtn){
         guestBtn.addEventListener('click',() =>{
             localStorage.setItem('userEmail', 'Invitado');
@@ -103,12 +98,10 @@ document.addEventListener('DOMContentLoaded',()=>{
             checkSession();
         });
     }
-    checkSession();
 
-    // Capturas el botón de registrarse
+    checkSession(); // Inicializar sesión al cargar
+
     const btnRegister = document.querySelector('.btn-register');
-
-// Abres el modal al hacer clic
     if (btnRegister) {
         btnRegister.addEventListener('click', (e) => {
             e.preventDefault();
@@ -118,8 +111,10 @@ document.addEventListener('DOMContentLoaded',()=>{
         });
     }
 
+    // =========================================================
+    // 3. MAPAS SUCURSALES
+    // =========================================================
     const btnUbicacionVina = document.querySelector('#btn-sucursal-vina');
-
     if (btnUbicacionVina){
         btnUbicacionVina.addEventListener('click', () =>{
             window.open('https://maps.app.goo.gl/gBv29EThxjiRvUTA9', '_blank')
@@ -133,48 +128,40 @@ document.addEventListener('DOMContentLoaded',()=>{
         })
     }
 
-// Interceptar el formulario de contacto para enviar por WhatsApp
+    // =========================================================
+    // 4. CONTACTO WHATSAPP
+    // =========================================================
     const contactForm = document.querySelector('.contact-form');
-
     if (contactForm) {
         contactForm.addEventListener('submit', (e) => {
-            e.preventDefault(); // Evitamos que la página se recargue
-
-            // 1. Obtenemos los valores que el usuario ingresó
+            e.preventDefault();
             const nombre = document.getElementById('name').value;
             const correo = document.getElementById('email').value;
             const mensaje = document.getElementById('message').value;
 
-            // 2. Construimos el texto
             const textoWhatsApp = `¡Hola! Me llamo ${nombre}.%0A%0AMi correo es ${correo}.%0A%0A${mensaje}`;
-
-            // 3. Definimos el número de destino (código de país + número)
             const numeroDestino = '56967671234';
 
-            // 4. Generamos la URL y la abrimos en una nueva pestaña
             const url = `https://wa.me/${numeroDestino}?text=${textoWhatsApp}`;
             window.open(url, '_blank');
 
-            // 5. Limpiamos el formulario después de enviar
             contactForm.reset();
         });
     }
 
-    // Limitar el rango de fechas en la reserva (Mínimo hoy, máximo 30 días)
+    // =========================================================
+    // 5. RANGO DE FECHAS RESERVA
+    // =========================================================
     const dateInput = document.getElementById('date');
-
     if (dateInput) {
-        // 1. Obtener la fecha actual (local)
         const hoy = new Date();
         const year = hoy.getFullYear();
         const month = String(hoy.getMonth() + 1).padStart(2, '0');
         const day = String(hoy.getDate()).padStart(2, '0');
         const minDate = `${year}-${month}-${day}`;
 
-        // Establecer que no se puedan elegir fechas en el pasado
         dateInput.setAttribute('min', minDate);
 
-        // 2. Calcular la fecha límite (ejemplo: 30 días a partir de hoy)
         const limite = new Date();
         limite.setDate(hoy.getDate() + 30);
         const maxYear = limite.getFullYear();
@@ -182,7 +169,172 @@ document.addEventListener('DOMContentLoaded',()=>{
         const maxDay = String(limite.getDate()).padStart(2, '0');
         const maxDate = `${maxYear}-${maxMonth}-${maxDay}`;
 
-        // Establecer el límite máximo en el calendario
         dateInput.setAttribute('max', maxDate);
     }
+
+    // =========================================================
+    // 6. CARRITO DE COMPRAS
+    // =========================================================
+    const cartElement = document.querySelector('.cart');
+    const cartItemsContainer = document.querySelector('.cart-items');
+    const cartTotalElement = document.querySelector('.cart-total');
+    const cartBadge = document.querySelector('.cart-button span');
+    const btnOpenCart = document.querySelector('.cart-button');
+    const addButtons = document.querySelectorAll('.add-button');
+
+    const viewOrder = document.getElementById('cart-view-order');
+    const viewSuccess = document.getElementById('cart-view-success');
+    const btnConfirmar = document.getElementById('btn-confirmar');
+    const btnSeguirComprando = document.getElementById('btn-seguir-comprando');
+    const btnCloseCartAll = document.querySelectorAll('.close-cart');
+
+    let carrito = JSON.parse(localStorage.getItem('carritoBajon')) || [];
+
+    function actualizarCarrito() {
+        localStorage.setItem('carritoBajon', JSON.stringify(carrito));
+        cartItemsContainer.innerHTML = '';
+
+        let totalPrecio = 0;
+        let totalCantidad = 0;
+
+        carrito.forEach((item, index) => {
+            totalPrecio += item.precio * item.cantidad;
+            totalCantidad += item.cantidad;
+
+            const precioFormateado = '$' + item.precio.toLocaleString('es-CL');
+
+            const itemDiv = document.createElement('div');
+            itemDiv.classList.add('cart-item');
+
+            itemDiv.innerHTML = `
+                <div>
+                    <strong>${item.titulo}</strong>
+                    <p>${precioFormateado}</p>
+                    <button class="btn-quitar" data-index="${index}">Quitar</button>
+                </div>
+                <div class="quantity">
+                    <button class="btn-restar" data-index="${index}">-</button>
+                    <span>${item.cantidad}</span>
+                    <button class="btn-sumar" data-index="${index}">+</button>
+                </div>
+            `;
+            cartItemsContainer.appendChild(itemDiv);
+        });
+
+        cartTotalElement.textContent = '$' + totalPrecio.toLocaleString('es-CL');
+        cartBadge.textContent = totalCantidad;
+
+        const subtotalElement = document.querySelector('.cart-summary div:first-child strong');
+        if(subtotalElement) subtotalElement.textContent = '$' + totalPrecio.toLocaleString('es-CL');
+    }
+
+    // Abrir carrito
+    btnOpenCart.addEventListener('click', () => {
+        cartElement.classList.add('open');
+    });
+
+    // Cerrar carrito (sirve para ambas 'x')
+    btnCloseCartAll.forEach(btn => {
+        btn.addEventListener('click', () => {
+            cartElement.classList.remove('open');
+
+            // Volver a la vista normal cuando la animación termine
+            setTimeout(() => {
+                viewSuccess.style.display = 'none';
+                viewOrder.style.display = 'flex';
+            }, 300);
+        });
+    });
+
+    // Funcionalidad "+ AGREGAR"
+    addButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const card = e.target.closest('.product-card');
+            const titulo = card.querySelector('h3').textContent.trim();
+            const precioTexto = card.querySelector('.product-bottom strong').textContent.trim();
+
+            const precio = parseInt(precioTexto.replace('$', '').replace('.', ''));
+            const itemExistente = carrito.find(item => item.titulo === titulo);
+
+            if (itemExistente) {
+                itemExistente.cantidad++;
+            } else {
+                carrito.push({ titulo, precio, cantidad: 1 });
+            }
+
+            actualizarCarrito();
+            cartElement.classList.add('open');
+        });
+    });
+
+    // Sumar, restar o quitar desde dentro del carrito
+    cartItemsContainer.addEventListener('click', (e) => {
+        const index = e.target.getAttribute('data-index');
+
+        if (e.target.classList.contains('btn-sumar')) {
+            carrito[index].cantidad++;
+            actualizarCarrito();
+        }
+
+        if (e.target.classList.contains('btn-restar')) {
+            if (carrito[index].cantidad > 1) {
+                carrito[index].cantidad--;
+            }
+            actualizarCarrito();
+        }
+
+        if (e.target.classList.contains('btn-quitar')) {
+            carrito.splice(index, 1);
+            actualizarCarrito();
+
+            if(carrito.length === 0) {
+                cartElement.classList.remove('open');
+            }
+        }
+    });
+
+    // Confirmar pedido (Pasar a la pantalla de éxito)
+    if (btnConfirmar) {
+        btnConfirmar.addEventListener('click', () => {
+            if (carrito.length === 0) {
+                alert("El carrito está vacío, agrega productos primero.");
+                return;
+            }
+
+            let totalCantidad = 0;
+            let totalPrecio = 0;
+            carrito.forEach(item => {
+                totalCantidad += item.cantidad;
+                totalPrecio += item.precio * item.cantidad;
+            });
+
+            document.getElementById('success-items-count').textContent = totalCantidad + (totalCantidad === 1 ? ' producto' : ' productos');
+            document.getElementById('success-total-price').textContent = '$' + totalPrecio.toLocaleString('es-CL');
+            document.getElementById('success-order-num').textContent = Math.floor(Math.random() * 9000) + 1000;
+
+            viewOrder.style.display = 'none';
+            viewSuccess.style.display = 'flex';
+
+            // Vaciar el carrito en la memoria lógica
+            carrito = [];
+            actualizarCarrito();
+        });
+    }
+
+    // Botón "Seguir comprando" de la pantalla de éxito
+    if (btnSeguirComprando) {
+        btnSeguirComprando.addEventListener('click', () => {
+            cartElement.classList.remove('open');
+
+            // Volver a la vista normal cuando la animación termine
+            setTimeout(() => {
+                viewSuccess.style.display = 'none';
+                viewOrder.style.display = 'flex';
+            }, 300);
+        });
+    }
+
+    // Cargar visualmente el carrito al iniciar la página
+    actualizarCarrito();
+
 });
