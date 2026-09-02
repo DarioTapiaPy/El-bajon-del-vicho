@@ -1,25 +1,35 @@
-
-
 //filtro para separar hamburguesas, acompañamientos y bebidas
-
 document.addEventListener('DOMContentLoaded', () => {
     const botones = document.querySelectorAll('.category');
     const productos = document.querySelectorAll('.product-card');
 
     botones.forEach(boton => {
         boton.addEventListener('click', () => {
+            // Verificamos si el botón que clickeamos ya estaba activo
+            const estaActivo = boton.classList.contains('active');
+
+            // Limpiamos la clase 'active' de todos los botones
             botones.forEach(b => b.classList.remove('active'));
-            boton.classList.add('active');
 
-            const filtro = boton.getAttribute('data-filter');
-
-            productos.forEach(producto => {
-                if (producto.getAttribute('data-category') === filtro) {
+            if (estaActivo) {
+                // Si ya estaba activo, al hacer clic queremos desmarcarlo
+                // y mostrar todos los productos nuevamente
+                productos.forEach(producto => {
                     producto.style.display = '';
-                } else {
-                    producto.style.display = 'none';
-                }
-            });
+                });
+            } else {
+                // Si no estaba activo, lo marcamos y aplicamos el filtro
+                boton.classList.add('active');
+                const filtro = boton.getAttribute('data-filter');
+
+                productos.forEach(producto => {
+                    if (producto.getAttribute('data-category') === filtro) {
+                        producto.style.display = '';
+                    } else {
+                        producto.style.display = 'none';
+                    }
+                });
+            }
         });
     });
 });
@@ -106,5 +116,20 @@ document.addEventListener('DOMContentLoaded',()=>{
                 modal.style.display = 'flex';
             }
         });
+    }
+
+    const btnUbicacionVina = document.querySelector('#btn-sucursal-vina');
+
+    if (btnUbicacionVina){
+        btnUbicacionVina.addEventListener('click', () =>{
+            window.open('https://maps.app.goo.gl/gBv29EThxjiRvUTA9', '_blank')
+        })
+    }
+
+    const btnUbicacionPteAlto = document.querySelector('#btn-sucursal-pte-alto');
+    if (btnUbicacionPteAlto){
+        btnUbicacionPteAlto.addEventListener('click', () =>{
+            window.open('https://maps.app.goo.gl/gQGtiKcHUo6ZeocC8','_blank')
+        })
     }
 });
