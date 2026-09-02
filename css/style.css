@@ -342,6 +342,9 @@ button {
     text-shadow: 5px 5px 0 #000000;
 }
 
+.hero-subtitle {
+    margin-bottom: 30px;
+}
 
 .hero-description {
     color: #c9c9c9;
