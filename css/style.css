@@ -1354,18 +1354,22 @@ button {
     color: var(--yellow);
     margin-bottom: 20px;
 }
-.btn-guest{
+.btn-guest {
     background-color: var(--yellow);
     color: #000000;
     font-weight: 800;
     width: 100%;
     padding: 14px;
     border: none;
-    border-radius: 7px;
+    border-radius: 12px !important; /* Fuerza las esquinas redondas */
     cursor: pointer;
     font-size: 12px;
     text-transform: uppercase;
     transition: 0.2s;
+    margin-bottom: 16px !important; /* Separación forzada de ~2cm */
+}
+.btn-guest:last-child {
+    margin-bottom: 0 !important;
 }
 .btn-guest:hover{
     background-color: var(--yellow-dark);
@@ -1554,5 +1558,68 @@ button {
 
         max-width: calc(100% - 20px);
     }
+    /* =========================================================
+       OPCIONES DE ENTREGA (MODAL)
+    ========================================================= */
+    .delivery-options {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 20px !important; /* Separación garantizada */
+        margin: 25px 0 !important;
+    }
 
+    /* Fuerza el redondeado para separar visualmente los bloques */
+    .delivery-options .btn-guest,
+    .delivery-options button {
+        border-radius: 10px !important;
+        margin: 0 !important;
+    }
+
+    .btn-delivery-option, .btn-pickup-option {
+        width: 100%;
+        padding: 14px 20px;
+        font-weight: bold;
+        font-size: 0.95rem;
+        cursor: pointer;
+        text-transform: uppercase;
+        transition: all 0.2s ease;
+    }
+
+    /* Botón principal (Amarillo) */
+    .btn-delivery-option {
+        background-color: var(--yellow);
+        color: #000;
+        border: none;
+    }
+
+    .btn-delivery-option:hover {
+        background-color: var(--yellow-dark);
+    }
+
+    /* Botón secundario (Borde amarillo) */
+    .btn-pickup-option {
+        background-color: transparent;
+        color: #fff;
+        border: 2px solid var(--yellow);
+    }
+
+    .btn-pickup-option:hover {
+        background-color: rgba(255, 184, 0, 0.15);
+    }
+
+    /* Campo de texto de dirección */
+    #addressInput {
+        width: 100%;
+        padding: 12px 15px;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+        background-color: #111;
+        color: #fff;
+        margin: 15px 0;
+        box-sizing: border-box;
+    }
+
+    #addressInput:focus {
+        outline: 1px solid var(--yellow);
+    }
 }
