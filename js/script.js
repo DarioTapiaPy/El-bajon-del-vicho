@@ -543,4 +543,55 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+    // =========================================================
+// 9. VALIDACIÓN Y GUARDADO DE RESERVAS
+// =========================================================
+    const reservationForm = document.querySelector('.reservation-form');
+
+    if (reservationForm) {
+        reservationForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const correoUsuario = localStorage.getItem('userEmail');
+
+            if (!correoUsuario || correoUsuario === 'Invitado') {
+                alert("⚠️ Debes iniciar sesión con tu correo para poder reservar una mesa.");
+                const modalLogin = document.getElementById('loginModal');
+                if (modalLogin) {
+                    modalLogin.style.display = 'flex';
+                }
+                return;
+            }
+
+            // Extraemos los valores exactos de tu HTML
+            const cantPersonas = document.getElementById('people').value;
+            const fecha = document.getElementById('date').value;
+            const hora = document.getElementById('time').value;
+            const sucursal = document.getElementById('branch').value;
+
+            // Validación extra por seguridad
+            if (!cantPersonas || !fecha || !hora || !sucursal) {
+                alert("⚠️ Por favor completa todos los datos de la reserva.");
+                return;
+            }
+
+            // Creamos el objeto de la reserva
+            const nuevaReserva = {
+                correo: correoUsuario,
+                personas: cantPersonas,
+                fecha: fecha,
+                hora: hora,
+                sucursal: sucursal
+            };
+
+            // Guardamos en LocalStorage
+            let reservas = JSON.parse(localStorage.getItem('bajon_db_reservas')) || [];
+            reservas.push(nuevaReserva);
+            localStorage.setItem('bajon_db_reservas', JSON.stringify(reservas));
+
+            alert(`¡Reserva confirmada con éxito! Te hemos enviado un comprobante a ${correoUsuario}.`);
+            reservationForm.reset();
+        });
+    }
 });
