@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control | El Bajón del Vicho</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header class="header">
+    <div class="header-container">
+        <a href="index.html" class="logo">
+            <img src="assets/logo.png" alt="El Bajón del Vicho">
+        </a>
+        <a href="index.html" class="btn btn-secondary">← Volver a la web</a>
+    </div>
+</header>
+
+<main>
+    <!-- VISTA LOGIN ADMIN -->
+    <div id="admin-login-view" class="account-container" style="margin-top: 100px;">
+        <div class="account-box" style="margin: 0 auto; max-width: 400px;">
+            <h2 style="text-align: center;">ACCESO ADMINISTRADOR</h2>
+            <form id="form-admin-login">
+                <div class="form-group">
+                    <label>Correo corporativo</label>
+                    <input type="email" id="adminEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="adminPass" required>
+                </div>
+                <button type="submit" class="btn btn-primary full-width">Entrar al Sistema</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- VISTA PANEL DE CONTROL (Oculto por defecto) -->
+    <div id="admin-dashboard-view" class="admin-container" style="display: none;">
+        <div class="admin-header">
+            <h2>Gestión de Productos</h2>
+            <button id="btn-admin-logout" class="btn btn-secondary">Cerrar Sesión</button>
+        </div>
+
+        <div style="overflow-x: auto;">
+            <table class="admin-table">
+                <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Descripción</th>
+                    <th>Precio ($)</th>
+                    <th>Estado (Stock)</th>
+                    <th>Acción</th>
+                </tr>
+                </thead>
+                <tbody id="admin-table-body">
+                <!-- Productos renderizados con JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const loginView = document.getElementById('admin-login-view');
+        const dashboardView = document.getElementById('admin-dashboard-view');
+        const loginForm = document.getElementById('form-admin-login');
+        const tableBody = document.getElementById('admin-table-body');
+        const btnLogout = document.getElementById('btn-admin-logout');
+
+        // Base de datos de respaldo (Autonomía del panel admin)
+        const productosBase = [
+            { id: "prod-1", nombre: "COMBO CLASICO", desc: "La opción tradicional que nunca falla. Hamburguesa de carne de res con queso cheddar, lechuga fresca, tomate, cebolla morada y aderezos clásicos. Incluye porción de papas fritas y una lata de Coca-Cola.", precio: 8990, stock: true },
+            { id: "prod-2", nombre: "COMBO GORILLA GLUE", desc: "Una opción intensa y crujiente. Hamburguesa de carne de res con queso cheddar derretido, tiras de tocino, pepinillos, aros de cebolla empanizados y salsa BBQ. Incluye porción de papas fritas y una lata de Coca-Cola.", precio: 11990, stock: true },
+            { id: "prod-3", nombre: "COMBO HAZE", desc: "Una combinación de sabores dulces y salados. Hamburguesa de carne de res con queso cheddar, cebolla caramelizada, pepinillos y una cubierta de mermelada de tocino o relish. Incluye porción de papas fritas y una lata de Coca-Cola.", precio: 11990, stock: true },
+            { id: "prod-4", nombre: "COMBO PURPLE HAZE", desc: "El combo más completo. Hamburguesa de carne desmechada con abundante guacamole, rodajas de tomate y queso. Acompañada de papas fritas, crujientes bocados de pollo frito, salsa para untar y una lata de Coca-Cola.", precio: 13990, stock: true },
+            { id: "prod-5", nombre: "Papas Fritas Individuales", desc: "Porción individual de papas fritas de corte ondulado, presentadas en bolsa de papel. El tamaño justo para calmar el antojo.", precio: 1990, stock: true },
+            { id: "prod-6", nombre: "Nuggets de Pollo", desc: "Clásicos bocados de pollo con un exterior crujiente y dorado. Ideales para compartir o como el acompañamiento perfecto. Porción de 5 unidades.", precio: 2990, stock: true },
+            { id: "prod-7", nombre: "Aros de Cebolla", desc: "Aros de cebolla gruesos con un empanizado crujiente y dorado. Un acompañamiento clásico con un suave contraste dulce y salado.", precio: 3490, stock: true },
+            { id: "prod-8", nombre: "Mozarella Fingers", desc: "Bastones de queso mozzarella empanizados y fritos hasta alcanzar un dorado crujiente por fuera, con queso suave y fundido por dentro. Porción de 6 unidades.", precio: 4490, stock: true },
+            { id: "prod-9", nombre: "Papas Fritas Grandes", desc: "Porción familiar de papas fritas de corte ondulado, servidas calientes y con el punto exacto de sal. Especial para compartir.", precio: 4990, stock: true },
+            { id: "prod-10", nombre: "Papas Fritas Vichonas", desc: "Papas fritas de corte ondulado cubiertas con salsa de queso fundido, carne desmechada, tocino, crema ácida y un toque de ciboulette fresco. Una opción contundente.", precio: 7990, stock: true },
+            { id: "prod-11", nombre: "Agua Individual", desc: "Botella de agua purificada sin gas por unidad. La opción más ligera, clásica y saludable para mantenerte hidratado.", precio: 1200, stock: true },
+            { id: "prod-12", nombre: "Jugo Individual", desc: "Jugo néctar en formato de 400 ml por unidad. Una alternativa dulce y refrescante para acompañar tus comidas. Sabores a elección según disponibilidad", precio: 1500, stock: true },
+            { id: "prod-13", nombre: "Bebida en Lata", desc: "Bebida en lata de 350 cc por unidad, servida bien fría. Elige tu sabor favorito entre nuestras distintas opciones clásicas, saborizadas o en su versión sin azúcar.", precio: 1500, stock: true }
+        ];
+
+        // 1. Verificación de Sesión
+        if (sessionStorage.getItem('adminAuth') === 'true') {
+            loginView.style.display = 'none';
+            dashboardView.style.display = 'block';
+            renderizarTabla();
+        }
+
+        // 2. Lógica de Login
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('adminEmail').value;
+            const pass = document.getElementById('adminPass').value;
+
+            if (email === 'vicente@admin.cl' && pass === 'admin123') {
+                sessionStorage.setItem('adminAuth', 'true');
+                loginView.style.display = 'none';
+                dashboardView.style.display = 'block';
+                renderizarTabla();
+            } else {
+                alert('Credenciales incorrectas. Acceso denegado.');
+            }
+        });
+
+        // 3. Lógica Logout
+        btnLogout.addEventListener('click', () => {
+            sessionStorage.removeItem('adminAuth');
+            window.location.reload();
+        });
+
+        // 4. Renderizar Tabla de Productos
+        function renderizarTabla() {
+            // Inicializar la base de datos si está vacía
+            if (!localStorage.getItem('bajon_db_productos')) {
+                localStorage.setItem('bajon_db_productos', JSON.stringify(productosBase));
+            }
+
+            const db = JSON.parse(localStorage.getItem('bajon_db_productos')) || [];
+            tableBody.innerHTML = '';
+
+            db.forEach((prod, index) => {
+                const tr = document.createElement('tr');
+
+                const btnStockClass = prod.stock ? 'btn-toggle-stock' : 'btn-toggle-stock agotado';
+                const btnStockText = prod.stock ? 'En Stock (Ocultar)' : 'Agotado (Mostrar)';
+
+                tr.innerHTML = `
+                <td><strong>${prod.nombre}</strong></td>
+                <td>
+                    <textarea id="desc-${index}" class="admin-textarea">${prod.desc}</textarea>
+                </td>
+                <td>
+                    <input type="number" id="precio-${index}" class="admin-input" value="${prod.precio}">
+                </td>
+                <td>
+                    <button id="stock-${index}" class="${btnStockClass}">${btnStockText}</button>
+                </td>
+                <td>
+                    <button class="btn-guardar-admin" data-index="${index}">Guardar</button>
+                </td>
+            `;
+                tableBody.appendChild(tr);
+
+                // Toggle Stock
+                document.getElementById(`stock-${index}`).addEventListener('click', function() {
+                    prod.stock = !prod.stock; // Invierte el valor
+                    this.className = prod.stock ? 'btn-toggle-stock' : 'btn-toggle-stock agotado';
+                    this.textContent = prod.stock ? 'En Stock (Ocultar)' : 'Agotado (Mostrar)';
+
+                    // 👇 NUEVO: Guardado automático en la base de datos al hacer clic
+                    localStorage.setItem('bajon_db_productos', JSON.stringify(db));
+                });
+            });
+
+            // Eventos Guardar
+            document.querySelectorAll('.btn-guardar-admin').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const i = e.target.getAttribute('data-index');
+                    db[i].desc = document.getElementById(`desc-${i}`).value;
+                    db[i].precio = parseInt(document.getElementById(`precio-${i}`).value);
+
+                    // Guardar en la DB
+                    localStorage.setItem('bajon_db_productos', JSON.stringify(db));
+                    alert(`¡${db[i].nombre} actualizado exitosamente!`);
+                });
+            });
+        }
+    });
+</script>
+</body>
+</html>
