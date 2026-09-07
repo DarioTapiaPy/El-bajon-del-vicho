@@ -134,9 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     }
 
-    // =========================================================
-    // 4. CONTACTO WHATSAPP
-    // =========================================================
     const contactForm = document.querySelector('.contact-form');
     if (contactForm) {
         contactForm.addEventListener('submit', (e) => {
@@ -145,12 +142,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const correo = document.getElementById('email').value;
             const mensaje = document.getElementById('message').value;
 
-            const textoWhatsApp = `¡Hola! Me llamo ${nombre}.%0A%0AMi correo es ${correo}.%0A%0A${mensaje}`;
-            const numeroDestino = '56967671234';
+            // 1. Definimos el correo de destino
+            const correoDestino = 'contacto@elbajondelvicho.cl';
 
-            const url = `https://wa.me/${numeroDestino}?text=${textoWhatsApp}`;
-            window.open(url, '_blank');
+            // 2. Usamos encodeURIComponent para que los espacios y saltos de línea no rompan el formato del correo
+            const asunto = encodeURIComponent(`Nuevo mensaje de contacto de: ${nombre}`);
+            const cuerpoCorreo = encodeURIComponent(`¡Hola! Me llamo ${nombre}.\n\nMi correo de contacto es: ${correo}\n\n${mensaje}`);
 
+            // 3. Estructuramos la URL con el protocolo mailto:
+            const url = `mailto:${correoDestino}?subject=${asunto}&body=${cuerpoCorreo}`;
+
+            // 4. Ejecutamos el enlace en la misma ventana (el navegador abrirá la app de correos automáticamente)
+            window.location.href = url;
+
+            // 5. Limpiamos el formulario
             contactForm.reset();
         });
     }
