@@ -273,10 +273,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Funcionalidad "+ AGREGAR"
+// Funcionalidad "+ AGREGAR"
     addButtons.forEach(btn => {
         btn.addEventListener('click', (e) => {
             const card = e.target.closest('.product-card');
+
+            // 👇 NUEVO CANDADO: Si el producto está agotado, detenemos la ejecución aquí mismo
+            if (card.classList.contains('sin-stock')) {
+                return;
+            }
+
             const titulo = card.querySelector('h3').textContent.trim();
             const precioTexto = card.querySelector('.product-bottom strong').textContent.trim();
 
@@ -473,17 +479,68 @@ document.addEventListener('DOMContentLoaded', () => {
     actualizarCarrito();
 
 
-    // CERRAR SESIÓN
+// CERRAR SESIÓN
     const btnLogout = document.getElementById('btnLogout');
 
     if (btnLogout) {
         btnLogout.addEventListener('click', () => {
-            // Borramos cualquier rastro de la sesión
-            localStorage.clear();
+            // Borramos solo la sesión del usuario para no destruir la base de datos del Admin
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('userAddress');
+            localStorage.removeItem('carritoBajon');
             sessionStorage.clear();
 
             // Recargamos la página para que vuelva a su estado original
             window.location.reload();
         });
     }
+
+}); // <--- ⚠️ ESTA ES LA LLAVE MAESTRA. CIERRA EL BLOQUE PRINCIPAL ANTES DE LA BASE DE DATOS.
+
+// =========================================================
+// 8. BASE DE DATOS LOCAL (PRODUCTOS)
+// =========================================================
+document.addEventListener('DOMContentLoaded', () => {
+    const productosBase = [
+        { id: "prod-1", nombre: "COMBO CLASICO", desc: "La opción tradicional que nunca falla. Hamburguesa de carne de res con queso cheddar, lechuga fresca, tomate, cebolla morada y aderezos clásicos. Incluye porción de papas fritas y una lata de Coca-Cola.", precio: 8990, stock: true },
+        { id: "prod-2", nombre: "COMBO GORILLA GLUE", desc: "Una opción intensa y crujiente. Hamburguesa de carne de res con queso cheddar derretido, tiras de tocino, pepinillos, aros de cebolla empanizados y salsa BBQ. Incluye porción de papas fritas y una lata de Coca-Cola.", precio: 11990, stock: true },
+        { id: "prod-3", nombre: "COMBO HAZE", desc: "Una combinación de sabores dulces y salados. Hamburguesa de carne de res con queso cheddar, cebolla caramelizada, pepinillos y una cubierta de mermelada de tocino o relish. Incluye porción de papas fritas y una lata de Coca-Cola.", precio: 11990, stock: true },
+        { id: "prod-4", nombre: "COMBO PURPLE HAZE", desc: "El combo más completo. Hamburguesa de carne desmechada con abundante guacamole, rodajas de tomate y queso. Acompañada de papas fritas, crujientes bocados de pollo frito, salsa para untar y una lata de Coca-Cola.", precio: 13990, stock: true },
+        { id: "prod-5", nombre: "Papas Fritas Individuales", desc: "Porción individual de papas fritas de corte ondulado, presentadas en bolsa de papel. El tamaño justo para calmar el antojo.", precio: 1990, stock: true },
+        { id: "prod-6", nombre: "Nuggets de Pollo", desc: "Clásicos bocados de pollo con un exterior crujiente y dorado. Ideales para compartir o como el acompañamiento perfecto. Porción de 5 unidades.", precio: 2990, stock: true },
+        { id: "prod-7", nombre: "Aros de Cebolla", desc: "Aros de cebolla gruesos con un empanizado crujiente y dorado. Un acompañamiento clásico con un suave contraste dulce y salado.", precio: 3490, stock: true },
+        { id: "prod-8", nombre: "Mozarella Fingers", desc: "Bastones de queso mozzarella empanizados y fritos hasta alcanzar un dorado crujiente por fuera, con queso suave y fundido por dentro. Porción de 6 unidades.", precio: 4490, stock: true },
+        { id: "prod-9", nombre: "Papas Fritas Grandes", desc: "Porción familiar de papas fritas de corte ondulado, servidas calientes y con el punto exacto de sal. Especial para compartir.", precio: 4990, stock: true },
+        { id: "prod-10", nombre: "Papas Fritas Vichonas", desc: "Papas fritas de corte ondulado cubiertas con salsa de queso fundido, carne desmechada, tocino, crema ácida y un toque de ciboulette fresco. Una opción contundente.", precio: 7990, stock: true },
+        { id: "prod-11", nombre: "Agua Individual", desc: "Botella de agua purificada sin gas por unidad. La opción más ligera, clásica y saludable para mantenerte hidratado.", precio: 1200, stock: true },
+        { id: "prod-12", nombre: "Jugo Individual", desc: "Jugo néctar en formato de 400 ml por unidad. Una alternativa dulce y refrescante para acompañar tus comidas. Sabores a elección según disponibilidad", precio: 1500, stock: true },
+        { id: "prod-13", nombre: "Bebida en Lata", desc: "Bebida en lata de 350 cc por unidad, servida bien fría. Elige tu sabor favorito entre nuestras distintas opciones clásicas, saborizadas o en su versión sin azúcar.", precio: 1500, stock: true }
+    ];
+
+    // Inicializar BD si no existe
+    if (!localStorage.getItem('bajon_db_productos')) {
+        localStorage.setItem('bajon_db_productos', JSON.stringify(productosBase));
+    }
+
+    // Leer BD
+    const db = JSON.parse(localStorage.getItem('bajon_db_productos'));
+
+    // Actualizar el DOM con la BD
+    db.forEach(prod => {
+        const card = document.querySelector(`.product-card[data-id="${prod.id}"]`);
+        if (card) {
+            // Actualizar textos
+            card.querySelector('p').textContent = prod.desc;
+            card.querySelector('.product-bottom strong').textContent = '$' + prod.precio.toLocaleString('es-CL');
+
+            // Lógica Sin Stock
+            if (prod.stock === false) {
+                card.classList.add('sin-stock');
+                card.querySelector('.add-button').textContent = 'AGOTADO';
+            } else {
+                card.classList.remove('sin-stock');
+                card.querySelector('.add-button').textContent = '+ AGREGAR';
+            }
+        }
+    });
 });
