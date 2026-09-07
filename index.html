@@ -43,13 +43,18 @@
 
         <div class="header-actions">
 
-            <!-- R.2 -->
-            <button class="btn btn-login">
-                Iniciar sesión
+            <!-- BOTÓN CERRAR SESIÓN (Oculto por defecto) -->
+            <button id="btnLogout" class="btn" style="display: none; background-color: #000; color: #fff; border: 1px solid #444;">
+                Cerrar Sesión
             </button>
 
-            <!-- R.1 -->
-            <button class="btn btn-register">
+            <!-- R.2 -->
+            <button class="btn btn-login" id="btnLoginHeader">
+                Iniciar Sesión
+            </button>
+
+            <!-- R.1 (Se le agregó id="btnRegisterHeader") -->
+            <button id="btnRegisterHeader" class="btn btn-register">
                 Registrarse
             </button>
 
@@ -62,9 +67,7 @@
                 🛒
                 <span>0</span>
             </button>
-
         </div>
-
     </div>
 
 </header>
@@ -115,65 +118,6 @@
                     src="assets/logo.png"
                     alt="Hamburguesa El Bajón del Vicho"
             >
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         MODALIDAD DEL PEDIDO
-         R.7
-    ====================================================== -->
-
-    <section class="order-type">
-
-        <div class="section-container">
-
-            <p class="section-label">
-                TU PEDIDO
-            </p>
-
-            <h2>
-                ¿CÓMO QUIERES RECIBIRLO?
-            </h2>
-
-            <div class="order-options">
-
-                <button class="order-option active">
-
-                        <span class="order-icon">
-                            🛵
-                        </span>
-
-                    <strong>
-                        DELIVERY
-                    </strong>
-
-                    <small>
-                        Recíbelo donde estés
-                    </small>
-
-                </button>
-
-
-                <button class="order-option">
-
-                        <span class="order-icon">
-                            🏪
-                        </span>
-
-                    <strong>
-                        RETIRO EN TIENDA
-                    </strong>
-
-                    <small>
-                        Pasa a buscarlo
-                    </small>
-
-                </button>
-
-            </div>
 
         </div>
 
@@ -1074,6 +1018,25 @@
     </section>
 
 
+    <!-- =====================================================
+         LOGIN / REGISTRO
+         Estructura preparada
+         R.1
+         R.2
+         R.3
+    ====================================================== -->
+
+
+
+</main>
+
+
+<!-- =====================================================
+     CARRITO
+     R.6
+     R.15
+====================================================== -->
+
 <!-- =====================================================
      CARRITO
 ====================================================== -->
@@ -1284,6 +1247,45 @@
         </form>
     </div>
 </div>
+<div id="deliveryModal" class="modal-overlay" style="display: none;">
+    <div class="modal-card">
+        <button type="button" class="modal-close" id="closeDeliveryModal">&times;</button>
+        <p class="modal-subtitle">¿Cómo quieres recibir tu bajón?</p>
+        <h2 class="modal-title">TIPO DE ENTREGA</h2>
+        <div class="delivery-options">
+            <button type="button" id="btnOptionDelivery" class="btn-guest">DESPACHO A DOMICILIO </button>
+            <button type="button" id="btnOptionPickup" class="btn-guest">RETIRO EN TIENDA </button>
+        </div>
+    </div>
+</div>
+<div id="branchModal" class="modal-overlay" style="display: none;">
+    <div class="modal-card">
+        <button type="button" class="modal-close" id="closeBranchModal">&times;</button>
+        <p class="modal-subtitle">¿Dónde vas a retirar?</p>
+        <h2 class="modal-title">SELECCIONA SUCURSAL</h2>
+        <div class="delivery-options">
+            <button type="button" id="btnBranchVina" class="btn-guest">VIÑA DEL MAR</button>
+            <button type="button" id="btnBranchPuente" class="btn-guest">PUENTE ALTO</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL DIRECCIÓN DE DESPACHO -->
+<div id="addressModal" class="modal-overlay" style="display: none;">
+    <div class="modal-card">
+        <button type="button" class="modal-close" id="closeAddressModal">&times;</button>
+        <p class="modal-subtitle">Ingresa tus datos para el envío</p>
+        <h2 class="modal-title">DIRECCIÓN DE DESPACHO</h2>
+        <form id="addressForm">
+            <div class="form-group">
+                <input type="text" id="addressInput" placeholder="Ej: Av. Valparaíso 1234, Depto 502" required>
+            </div>
+            <button type="submit" class="btn-guest">GUARDAR Y CONFIRMAR</button>
+        </form>
+    </div>
+</div>
+
+
 <script src="js/script.js"></script>
 
 

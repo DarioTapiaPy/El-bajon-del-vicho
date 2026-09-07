@@ -41,12 +41,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function checkSession(){
         const savedUser = localStorage.getItem('userEmail');
+        const btnLogout = document.getElementById('btnLogout');
+        const btnRegister = document.getElementById('btnRegisterHeader'); // Asumiendo que agregaste el ID en tu HTML
         if (savedUser){
             btnLogin.textContent= savedUser;
             btnLogin.classList.add('logged-in');
+                if (btnLogout) btnLogout.style.display = 'inline-block';
+                if (btnRegister) btnRegister.style.display = 'none';
         } else{
             btnLogin.textContent= 'Iniciar sesion';
             btnLogin.classList.remove('logged-in');
+                if (btnLogout) btnLogout.style.display = 'none';
+                if (btnRegister) btnRegister.style.display = 'inline-block';
         }
     }
 
@@ -309,32 +315,140 @@ document.addEventListener('DOMContentLoaded', () => {
             actualizarCarrito();
         }
     });
+   // =========================================================
+       // 7. MODALES Y LÓGICA DE ENTREGA (DESPACHO / RETIRO)
+       // =========================================================
+       const deliveryModal = document.getElementById('deliveryModal');
+       const addressModal = document.getElementById('addressModal');
+       const branchModal = document.getElementById('branchModal'); // NUEVO
 
-    // Confirmar pedido
-    if (btnConfirmar) {
-        btnConfirmar.addEventListener('click', () => {
-            let totalCantidad = 0;
-            let totalPrecio = 0;
-            carrito.forEach(item => {
-                totalCantidad += item.cantidad;
-                totalPrecio += item.precio * item.cantidad;
-            });
+       const closeDeliveryModal = document.getElementById('closeDeliveryModal');
+       const closeAddressModal = document.getElementById('closeAddressModal');
+       const closeBranchModal = document.getElementById('closeBranchModal'); // NUEVO
 
-            document.getElementById('success-items-count').textContent = totalCantidad + (totalCantidad === 1 ? ' producto' : ' productos');
-            document.getElementById('success-total-price').textContent = '$' + totalPrecio.toLocaleString('es-CL');
-            document.getElementById('success-order-num').textContent = Math.floor(Math.random() * 9000) + 1000;
+       const btnOptionDelivery = document.getElementById('btnOptionDelivery');
+       const btnOptionPickup = document.getElementById('btnOptionPickup');
+       const btnBranchVina = document.getElementById('btnBranchVina'); // NUEVO
+       const btnBranchPuente = document.getElementById('btnBranchPuente'); // NUEVO
 
-            // Mostramos el mensaje de éxito
-            viewOrder.style.display = 'none';
-            viewEmpty.style.display = 'none';
-            viewSuccess.style.display = 'flex';
+       const addressForm = document.getElementById('addressForm');
+       const addressInput = document.getElementById('addressInput');
 
-            // Vaciamos la memoria y actualizamos el icono, pero NO llamamos a actualizarCarrito() para no romper la vista
-            carrito = [];
-            localStorage.setItem('carritoBajon', JSON.stringify(carrito));
-            cartBadge.textContent = '0';
-        });
-    }
+       // Cerrar modales con 'X'
+       if (closeDeliveryModal) closeDeliveryModal.addEventListener('click', () => deliveryModal.style.display = 'none');
+       if (closeAddressModal) closeAddressModal.addEventListener('click', () => addressModal.style.display = 'none');
+       if (closeBranchModal) closeBranchModal.addEventListener('click', () => branchModal.style.display = 'none');
+
+       // Cerrar haciendo clic fuera de la caja
+       window.addEventListener('click', (e) => {
+           if (e.target === deliveryModal) deliveryModal.style.display = 'none';
+           if (e.target === addressModal) addressModal.style.display = 'none';
+           if (e.target === branchModal) branchModal.style.display = 'none';
+       });
+
+       // 1. Al presionar "Confirmar pedido"
+       if (btnConfirmar) {
+           btnConfirmar.addEventListener('click', () => {
+               if (deliveryModal) deliveryModal.style.display = 'flex';
+           });
+       }
+
+       // 2. Si elige: RETIRO EN TIENDA
+       if (btnOptionPickup) {
+           btnOptionPickup.addEventListener('click', () => {
+               deliveryModal.style.display = 'none';
+               if (branchModal) branchModal.style.display = 'flex'; // Abre el modal de sucursales
+           });
+       }
+
+       // 2.1 Selección de sucursales
+       if (btnBranchVina) {
+           btnBranchVina.addEventListener('click', () => {
+               branchModal.style.display = 'none';
+               procesarPedidoFinal(false, 'Viña del Mar');
+           });
+       }
+
+       if (btnBranchPuente) {
+           btnBranchPuente.addEventListener('click', () => {
+               branchModal.style.display = 'none';
+               procesarPedidoFinal(false, 'Puente Alto');
+           });
+       }
+
+       // 3. Si elige: DESPACHO A DOMICILIO
+       if (btnOptionDelivery) {
+           btnOptionDelivery.addEventListener('click', () => {
+               deliveryModal.style.display = 'none';
+
+               const correoUsuario = localStorage.getItem('userEmail');
+
+               if (!correoUsuario || correoUsuario === 'Invitado') {
+                   alert("⚠️ Para la opción de despacho debes iniciar sesión.");
+                   if (modal) modal.style.display = 'flex';
+                   return;
+               }
+
+               const direccionGuardada = localStorage.getItem('userAddress');
+               addressInput.value = direccionGuardada ? direccionGuardada : '';
+
+               if (addressModal) addressModal.style.display = 'flex';
+           });
+       }
+
+       // 4. Guardar Dirección y Finalizar Pedido
+       if (addressForm) {
+           addressForm.addEventListener('submit', (e) => {
+               e.preventDefault();
+               const direccion = addressInput.value.trim();
+
+               if (direccion) {
+                   localStorage.setItem('userAddress', direccion);
+                   addressModal.style.display = 'none';
+                   procesarPedidoFinal(true);
+               }
+           });
+       }
+
+       // Función modificada para recibir la sucursal elegida
+       function procesarPedidoFinal(esDespacho, sucursalElegida = null) {
+           let totalCantidad = 0;
+           let totalPrecio = 0;
+
+           carrito.forEach(item => {
+               totalCantidad += item.cantidad;
+               totalPrecio += item.precio * item.cantidad;
+           });
+
+           document.getElementById('success-items-count').textContent = totalCantidad + (totalCantidad === 1 ? ' producto' : ' productos');
+           document.getElementById('success-total-price').textContent = '$' + totalPrecio.toLocaleString('es-CL');
+           document.getElementById('success-order-num').textContent = Math.floor(Math.random() * 9000) + 1000;
+
+           const successMessage = document.querySelector('.success-message');
+           const correoUsuario = localStorage.getItem('userEmail');
+
+           // Se usa innerHTML para poder poner en negrita el lugar
+           if (successMessage) {
+               if (esDespacho) {
+                   const direccionFinal = localStorage.getItem('userAddress');
+                   successMessage.innerHTML = `Te contactaremos a ${correoUsuario} para coordinar el despacho a <br><strong style="color: #ffb800;">${direccionFinal}</strong>.`;
+               } else {
+                   const correoRetiro = (correoUsuario && correoUsuario !== 'Invitado') ? correoUsuario : 'tu correo';
+                   successMessage.innerHTML = `¡Pedido listo para retiro! Te contactaremos a ${correoRetiro} cuando tu bajón esté listo en la sucursal de <br><strong style="color: #ffb800;">${sucursalElegida}<br>🕐 Lunes a Domingo<br>12:00 - 23:00</strong>.`;
+               }
+           }
+
+           viewOrder.style.display = 'none';
+           viewEmpty.style.display = 'none';
+           viewSuccess.style.display = 'flex';
+
+           carrito = [];
+           localStorage.setItem('carritoBajon', JSON.stringify(carrito));
+           cartBadge.textContent = '0';
+       }
+
+
+
 
     // Botón "Seguir comprando"
     if (btnSeguirComprando) {
@@ -357,4 +471,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Cargar visualmente el carrito al iniciar la página
     actualizarCarrito();
+
+
+    // CERRAR SESIÓN
+    const btnLogout = document.getElementById('btnLogout');
+
+    if (btnLogout) {
+        btnLogout.addEventListener('click', () => {
+            // Borramos cualquier rastro de la sesión
+            localStorage.clear();
+            sessionStorage.clear();
+
+            // Recargamos la página para que vuelva a su estado original
+            window.location.reload();
+        });
+    }
 });
