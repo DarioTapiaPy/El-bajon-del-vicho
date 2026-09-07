@@ -39,6 +39,8 @@
 
     <!-- VISTA PANEL DE CONTROL (Oculto por defecto) -->
     <div id="admin-dashboard-view" class="admin-container" style="display: none;">
+
+        <!-- SECCIÓN: GESTIÓN DE PRODUCTOS -->
         <div class="admin-header">
             <h2>Gestión de Productos</h2>
             <button id="btn-admin-logout" class="btn btn-secondary">Cerrar Sesión</button>
@@ -60,6 +62,30 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- NUEVA SECCIÓN: GESTIÓN DE RESERVAS -->
+        <div class="admin-header" style="margin-top: 60px;">
+            <h2>Gestión de Reservas</h2>
+        </div>
+
+        <div style="overflow-x: auto;">
+            <table class="admin-table">
+                <thead>
+                <tr>
+                    <th>Cliente (Correo)</th>
+                    <th>Sucursal</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Personas</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody id="admin-reservas-body">
+                <!-- Reservas inyectadas con JS -->
+                </tbody>
+            </table>
+        </div>
+
     </div>
 </main>
 
@@ -93,6 +119,7 @@
             loginView.style.display = 'none';
             dashboardView.style.display = 'block';
             renderizarTabla();
+            renderizarReservas(); // <-- LLAMADA NUEVA
         }
 
         // 2. Lógica de Login
@@ -106,6 +133,7 @@
                 loginView.style.display = 'none';
                 dashboardView.style.display = 'block';
                 renderizarTabla();
+                renderizarReservas(); // <-- LLAMADA NUEVA
             } else {
                 alert('Credenciales incorrectas. Acceso denegado.');
             }
@@ -156,7 +184,7 @@
                     this.className = prod.stock ? 'btn-toggle-stock' : 'btn-toggle-stock agotado';
                     this.textContent = prod.stock ? 'En Stock (Ocultar)' : 'Agotado (Mostrar)';
 
-                    // 👇 NUEVO: Guardado automático en la base de datos al hacer clic
+                    // Guardado automático en la base de datos al hacer clic
                     localStorage.setItem('bajon_db_productos', JSON.stringify(db));
                 });
             });
@@ -171,6 +199,46 @@
                     // Guardar en la DB
                     localStorage.setItem('bajon_db_productos', JSON.stringify(db));
                     alert(`¡${db[i].nombre} actualizado exitosamente!`);
+                });
+            });
+        }
+
+        // 5. Renderizar Tabla de Reservas
+        function renderizarReservas() {
+            const tbodyReservas = document.getElementById('admin-reservas-body');
+            const reservas = JSON.parse(localStorage.getItem('bajon_db_reservas')) || [];
+            tbodyReservas.innerHTML = '';
+
+            if (reservas.length === 0) {
+                tbodyReservas.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--gray);">No hay reservas pendientes.</td></tr>';
+                return;
+            }
+
+            reservas.forEach((reserva, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${reserva.correo}</strong></td>
+                    <td>${reserva.sucursal}</td>
+                    <td>${reserva.fecha}</td>
+                    <td>${reserva.hora}</td>
+                    <td>${reserva.personas}</td>
+                    <td>
+                        <a href="mailto:${reserva.correo}?subject=Sobre tu reserva en El Bajón del Vicho" class="btn-guardar-admin" style="text-decoration: none; display: inline-block; text-align: center;">Contactar</a>
+                        <button class="btn-toggle-stock agotado btn-eliminar-reserva" data-index="${index}" style="margin-top: 8px;">Marcar Lista (Eliminar)</button>
+                    </td>
+                `;
+                tbodyReservas.appendChild(tr);
+            });
+
+            // Lógica para eliminar la reserva una vez procesada
+            document.querySelectorAll('.btn-eliminar-reserva').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    if(confirm('¿Estás seguro de marcar esta reserva como lista/eliminada?')) {
+                        const i = e.target.getAttribute('data-index');
+                        reservas.splice(i, 1);
+                        localStorage.setItem('bajon_db_reservas', JSON.stringify(reservas));
+                        renderizarReservas(); // Recarga la tabla en vivo
+                    }
                 });
             });
         }
